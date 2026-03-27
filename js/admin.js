@@ -10,11 +10,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const tableBody = document.getElementById('admin-products-table');
   const addProductBtn = document.getElementById('addProductBtn');
 
-  const modal = document.getElementById('productModal');
+  // --- Form Elements ---
+  const tableSection = document.getElementById('admin-table-section');
+  const formSection = document.getElementById('admin-form-section');
   const productForm = document.getElementById('productForm');
-  const modalTitle = document.getElementById('modalTitle');
-  const closeModalBtn = document.getElementById('closeModalBtn');
-  const cancelModalBtn = document.getElementById('cancelModalBtn');
+  const formTitle = document.getElementById('formTitle');
+  const cancelFormBtn = document.getElementById('cancelFormBtn');
 
   // --- Authentication ---
   function checkAuth() {
@@ -66,14 +67,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const p = window.appStore.getProduct(id);
     if (!p) return;
 
-    modalTitle.textContent = 'تعديل المنتج';
+    formTitle.textContent = 'تعديل المنتج';
     document.getElementById('productId').value = p.id;
     document.getElementById('productName').value = p.name;
     document.getElementById('productPrice').value = p.price;
     document.getElementById('productImage').value = p.image;
     document.getElementById('productDesc').value = p.description;
 
-    openModal();
+    openForm();
   };
 
   window.deleteProduct = async (id) => {
@@ -108,33 +109,28 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --- Modal Logic ---
-  // Modal Logic 
-  function openModal() {
-    modal.classList.add('active');
+  // --- Form Toggle Logic --- 
+  function openForm() {
+    tableSection.style.display = 'none';
+    formSection.style.display = 'block';
+    window.scrollTo(0, 0); // Scroll to top for mobile
   }
 
-  function closeModal() {
-    modal.classList.remove('active');
+  function closeForm() {
+    tableSection.style.display = 'block';
+    formSection.style.display = 'none';
     productForm.reset();
     document.getElementById('productId').value = ''; // clear hidden id
   }
 
   addProductBtn.addEventListener('click', () => {
-    modalTitle.textContent = 'إضافة منتج جديد';
+    formTitle.textContent = 'إضافة منتج جديد';
     productForm.reset();
     document.getElementById('productId').value = '';
-    openModal();
+    openForm();
   });
 
-  closeModalBtn.addEventListener('click', closeModal);
-  cancelModalBtn.addEventListener('click', closeModal);
-
-  // Close modal when clicking outside
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
-      closeModal();
-    }
-  });
+  cancelFormBtn.addEventListener('click', closeForm);
 
   productForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -161,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     submitBtn.textContent = originalText;
-    closeModal();
+    closeForm();
     // Render is handled by event listener now!
   });
 
