@@ -73,8 +73,8 @@
       <div class="container">
         <nav>
           <a href="index.html" class="logo text-gradient" target="_blank">منتجات زراعية لمدير النظام</a>
-          <div style="display: flex; gap: 1rem;">
-            <span style="color: var(--text-secondary);">أهلاً بك أيها المدير</span>
+          <div style="display: flex; gap: 1rem; align-items: center;">
+            <span class="hide-on-mobile" style="color: var(--text-secondary);">أهلاً بك أيها المدير</span>
             <button id="logoutBtn" class="btn btn-ghost">خروج</button>
           </div>
         </nav>
@@ -95,7 +95,7 @@
 
       <main class="main-content glass-panel"
         style="margin-top: 2rem; margin-bottom: 2rem; border-top: 1px solid var(--surface-border);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <div class="admin-header-actions">
           <h2>إدارة المنتجات</h2>
           <button id="addProductBtn" class="btn btn-primary">+ إضافة منتج جديد</button>
         </div>
