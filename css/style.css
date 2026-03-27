@@ -101,6 +101,15 @@ h1 {
   border: none;
   outline: none;
   text-decoration: none;
+  position: relative;
+  z-index: 50;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn:active {
+  transform: scale(0.96) !important;
+  box-shadow: none !important;
 }
 
 .btn-primary {
