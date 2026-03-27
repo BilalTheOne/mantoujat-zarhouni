@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard | منتجات الزرهوني</title>
+  <title>لوحة تحكم الإدارة | منتجات زراعية - الزرهوني</title>
   <link rel="stylesheet" href="css/style.css">
   <style>
     /* Overlay for Login view */
@@ -44,25 +44,25 @@
   <!-- ADMIN LOGIN VIEW -->
   <div id="login-view" class="container">
     <div class="login-box glass-panel animate-fade-in">
-      <h1 style="margin-bottom: 2rem;">Admin Login</h1>
+      <h1 style="margin-bottom: 2rem;">دخول لمدير النظام</h1>
 
       <form id="loginForm">
-        <div class="form-group" style="text-align: left;">
-          <label for="username">Username</label>
-          <input type="text" id="username" placeholder="Enter username" required>
+        <div class="form-group" style="text-align: right;">
+          <label for="username">اسم المستخدم</label>
+          <input type="text" id="username" placeholder="أدخل اسم المستخدم" required>
         </div>
-        <div class="form-group" style="text-align: left;">
-          <label for="password">Password</label>
-          <input type="password" id="password" placeholder="Enter password" required>
+        <div class="form-group" style="text-align: right;">
+          <label for="password">كلمة المرور</label>
+          <input type="password" id="password" placeholder="أدخل كلمة المرور" required>
         </div>
         <div id="login-error"
           style="color: var(--danger-color); font-size: 0.875rem; margin-bottom: 1rem; display: none;">
-          Invalid credentials
+          بيانات الدخول غير صحيحة
         </div>
-        <button type="submit" class="btn btn-primary" style="width: 100%">Login</button>
+        <button type="submit" class="btn btn-primary" style="width: 100%">دخول</button>
       </form>
       <div style="margin-top: 1.5rem">
-        <a href="index.html" class="btn btn-ghost" style="width: 100%">Back to Store</a>
+        <a href="index.html" class="btn btn-ghost" style="width: 100%">العودة للمتجر</a>
       </div>
     </div>
   </div>
@@ -72,10 +72,10 @@
     <header>
       <div class="container">
         <nav>
-          <a href="index.html" class="logo text-gradient" target="_blank">منتجات الزرهوني Admin</a>
-          <div>
-            <span style="margin-right: 1rem; color: var(--text-secondary);">Welcome, Admin</span>
-            <button id="logoutBtn" class="btn btn-ghost">Logout</button>
+          <a href="index.html" class="logo text-gradient" target="_blank">منتجات زراعية لمدير النظام</a>
+          <div style="display: flex; gap: 1rem;">
+            <span style="color: var(--text-secondary);">أهلاً بك أيها المدير</span>
+            <button id="logoutBtn" class="btn btn-ghost">خروج</button>
           </div>
         </nav>
       </div>
@@ -85,11 +85,10 @@
       <aside class="sidebar">
         <ul style="list-style: none;">
           <li style="margin-bottom: 1rem;">
-            <a href="#" style="color: var(--accent-color); font-weight: 500; text-decoration: none;">Products
-              Manager</a>
+            <a href="#" style="color: var(--accent-color); font-weight: 500; text-decoration: none;">مدير المنتجات</a>
           </li>
           <li style="margin-bottom: 1rem;">
-            <a href="index.html" style="color: var(--text-secondary); text-decoration: none;">View Live Store</a>
+            <a href="index.html" style="color: var(--text-secondary); text-decoration: none;">معاينة المتجر</a>
           </li>
         </ul>
       </aside>
@@ -97,18 +96,18 @@
       <main class="main-content glass-panel"
         style="margin-top: 2rem; margin-bottom: 2rem; border-top: 1px solid var(--surface-border);">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-          <h2>Manage Products</h2>
-          <button id="addProductBtn" class="btn btn-primary">+ Add New Product</button>
+          <h2>إدارة المنتجات</h2>
+          <button id="addProductBtn" class="btn btn-primary">+ إضافة منتج جديد</button>
         </div>
 
         <div style="overflow-x: auto;">
           <table>
             <thead>
               <tr>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Actions</th>
+                <th>الصورة</th>
+                <th>الإسم</th>
+                <th>السعر</th>
+                <th>إجراءات</th>
               </tr>
             </thead>
             <tbody id="admin-products-table">
@@ -124,41 +123,43 @@
   <div id="productModal" class="modal-backdrop">
     <div class="modal glass-panel" style="padding: 2rem;">
       <div class="modal-header">
-        <h2 id="modalTitle">Add Product</h2>
+        <h2 id="modalTitle">إضافة منتج</h2>
         <button class="close-btn" id="closeModalBtn">&times;</button>
       </div>
 
       <form id="productForm">
         <input type="hidden" id="productId">
 
-        <div class="form-group">
-          <label for="productName">Product Name</label>
+        <div class="form-group" style="text-align: right;">
+          <label for="productName">اسم المنتج</label>
           <input type="text" id="productName" required>
         </div>
 
-        <div class="form-group">
-          <label for="productPrice">Price ($)</label>
+        <div class="form-group" style="text-align: right;">
+          <label for="productPrice">السعر (درهم)</label>
           <input type="number" step="0.01" id="productPrice" required>
         </div>
 
-        <div class="form-group">
-          <label for="productImage">Image URL</label>
+        <div class="form-group" style="text-align: right;">
+          <label for="productImage">رابط الصورة</label>
           <input type="url" id="productImage" placeholder="https://..." required>
         </div>
 
-        <div class="form-group">
-          <label for="productDesc">Description</label>
+        <div class="form-group" style="text-align: right;">
+          <label for="productDesc">الوصف</label>
           <textarea id="productDesc" rows="3" required></textarea>
         </div>
 
         <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem;">
-          <button type="button" class="btn btn-ghost" id="cancelModalBtn">Cancel</button>
-          <button type="submit" class="btn btn-primary">Save Product</button>
+          <button type="button" class="btn btn-ghost" id="cancelModalBtn">إلغاء</button>
+          <button type="submit" class="btn btn-primary">حفظ المنتج</button>
         </div>
       </form>
     </div>
   </div>
 
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/store.js"></script>
   <script src="js/admin.js"></script>
 </body>

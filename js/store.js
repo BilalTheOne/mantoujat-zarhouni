@@ -1,89 +1,82 @@
-const STORAGE_KEY = 'منتجات الزرهوني_products';
+// 1. Paste Your Supabase Details Here!
+const supabaseUrl = 'https://vygouszancdykvaevqjg.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ5Z291c3phbmNkeWt2YWV2cWpnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ1NDAwMjgsImV4cCI6MjA5MDExNjAyOH0.Z8ji1j9-L_vRR2kfZsR_C4hY8geF3Au2HAWSmHuW6qk';
 
-const MOCK_PRODUCTS = [
-  {
-    id: 'p1',
-    name: 'Quantum Wireless Headphones',
-    price: 299.99,
-    description: 'Experience pure audio fidelity with our premium noise-cancelling wireless headphones.',
-    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=600'
-  },
-  {
-    id: 'p2',
-    name: 'Nebula Smartwatch',
-    price: 199.50,
-    description: 'Track your fitness, health, and stay connected with the sleek Nebula Smartwatch.',
-    image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=600'
-  },
-  {
-    id: 'p3',
-    name: 'Aero Mechanical Keyboard',
-    price: 149.00,
-    description: 'Elevate your typing experience with tactile mechanical switches and RGB backlighting.',
-    image: 'https://images.unsplash.com/photo-1595225476474-87563907a212?auto=format&fit=crop&q=80&w=600'
-  },
-  {
-    id: 'p4',
-    name: 'Luminary Desk Lamp',
-    price: 89.99,
-    description: 'Modern minimalist desk lamp with adjustable color temperature and brightness.',
-    image: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&q=80&w=600'
-  }
-];
+// 2. Initialize the DB client
+const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
 
 class Store {
   constructor() {
-    this.init();
-  }
-
-  init() {
-    if (!localStorage.getItem(STORAGE_KEY)) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(MOCK_PRODUCTS));
+    this.products = [];
+    if (supabaseUrl !== 'YOUR_SUPABASE_URL_HERE') {
+      this.fetchProducts();
     }
   }
 
   getProducts() {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    return this.products;
   }
 
   getProduct(id) {
-    return this.getProducts().find(p => p.id === id);
+    return this.products.find(p => p.id == id); // Loose equality in case DB id is integer, but JS is string
   }
 
-  addProduct(product) {
-    const products = this.getProducts();
-    const newProduct = {
-      ...product,
-      id: 'p' + Date.now().toString()
-    };
-    products.push(newProduct);
-    this._save(products);
-    return newProduct;
-  }
-
-  updateProduct(id, updates) {
-    const products = this.getProducts();
-    const index = products.findIndex(p => p.id === id);
-    if (index !== -1) {
-      products[index] = { ...products[index], ...updates };
-      this._save(products);
-      return products[index];
+  async fetchProducts() {
+    const { data, error } = await supabaseClient.from('products').select('*');
+    if (error) {
+      console.error('Error fetching products:', error);
+      return;
     }
-    return null;
-  }
-
-  deleteProduct(id) {
-    const products = this.getProducts();
-    const newProducts = products.filter(p => p.id !== id);
-    this._save(newProducts);
-  }
-
-  _save(products) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
-    // Dispatch custom event so other tabs/components can react to data changes
+    this.products = data || [];
     window.dispatchEvent(new CustomEvent('productsUpdated'));
+  }
+
+  async addProduct(productData) {
+    const { name, price, description, image } = productData;
+    const { data, error } = await supabaseClient
+      .from('products')
+      .insert([{ name, price, description, image }])
+      .select();
+
+    if (error) console.error('Error adding product:', error);
+    else if (data && data.length) {
+      this.products.push(data[0]);
+      window.dispatchEvent(new CustomEvent('productsUpdated'));
+    }
+  }
+
+  async updateProduct(id, updates) {
+    const { name, price, description, image } = updates;
+    const { data, error } = await supabaseClient
+      .from('products')
+      .update({ name, price, description, image })
+      .eq('id', id)
+      .select();
+
+    if (error) console.error('Error updating product:', error);
+    else if (data && data.length) {
+      const index = this.products.findIndex(p => p.id == id);
+      if (index !== -1) {
+        this.products[index] = data[0];
+        window.dispatchEvent(new CustomEvent('productsUpdated'));
+      }
+    }
+  }
+
+  async deleteProduct(id) {
+    const { error } = await supabaseClient
+      .from('products')
+      .delete()
+      .eq('id', id);
+
+    if (error) console.error('Error deleting product:', error);
+    else {
+      this.products = this.products.filter(p => p.id != id);
+      window.dispatchEvent(new CustomEvent('productsUpdated'));
+    }
   }
 }
 
 // Global instance
 window.appStore = new Store();
+

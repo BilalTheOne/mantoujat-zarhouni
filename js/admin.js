@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const p = window.appStore.getProduct(id);
     if (!p) return;
 
-    modalTitle.textContent = 'Edit Product';
+    modalTitle.textContent = 'تعديل المنتج';
     document.getElementById('productId').value = p.id;
     document.getElementById('productName').value = p.name;
     document.getElementById('productPrice').value = p.price;
@@ -76,10 +76,9 @@ document.addEventListener('DOMContentLoaded', () => {
     openModal();
   };
 
-  window.deleteProduct = (id) => {
-    if (confirm('Are you sure you want to delete this product?')) {
-      window.appStore.deleteProduct(id);
-      renderTable();
+  window.deleteProduct = async (id) => {
+    if (confirm('هل أنت متأكد من أنك تريد حذف هذا المنتج؟')) {
+      await window.appStore.deleteProduct(id);
     }
   };
 
@@ -87,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const products = window.appStore.getProducts();
 
     if (products.length === 0) {
-      tableBody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 2rem;">No products found. Add one!</td></tr>`;
+      tableBody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 2rem;">لم يتم العثور على منتجات. أضف واحداً!</td></tr>`;
       return;
     }
 
@@ -100,8 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
         <td style="color: #a5b4fc; font-weight: 600;">${formatPrice(p.price)}</td>
         <td>
           <div class="table-actions">
-            <button class="btn btn-ghost" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;" onclick="window.editProduct('${p.id}')">Edit</button>
-            <button class="btn btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;" onclick="window.deleteProduct('${p.id}')">Delete</button>
+            <button class="btn btn-ghost" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;" onclick="window.editProduct('${p.id}')">تعديل</button>
+            <button class="btn btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;" onclick="window.deleteProduct('${p.id}')">حذف</button>
           </div>
         </td>
       </tr>
@@ -109,6 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --- Modal Logic ---
+  // Modal Logic 
   function openModal() {
     modal.classList.add('active');
   }
@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   addProductBtn.addEventListener('click', () => {
-    modalTitle.textContent = 'Add New Product';
+    modalTitle.textContent = 'إضافة منتج جديد';
     productForm.reset();
     document.getElementById('productId').value = '';
     openModal();
@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  productForm.addEventListener('submit', (e) => {
+  productForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const id = document.getElementById('productId').value;
@@ -147,18 +147,28 @@ document.addEventListener('DOMContentLoaded', () => {
       description: document.getElementById('productDesc').value
     };
 
+    // Show loading state on button (optional but good practice)
+    const submitBtn = productForm.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'جاري الحفظ...';
+
     if (id) {
       // Edit existing
-      window.appStore.updateProduct(id, productData);
+      await window.appStore.updateProduct(id, productData);
     } else {
       // Add new
-      window.appStore.addProduct(productData);
+      await window.appStore.addProduct(productData);
     }
 
+    submitBtn.textContent = originalText;
     closeModal();
-    renderTable();
+    // Render is handled by event listener now!
   });
+
+  // Re-render automatically when the store completes a Supabase update!
+  window.addEventListener('productsUpdated', renderTable);
 
   // Initial check
   toggleViews();
 });
+

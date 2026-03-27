@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (products.length === 0) {
       container.innerHTML = `
         <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--text-secondary);">
-          <p>No products available right now.</p>
+          <p>لا توجد منتجات متاحة حالياً.</p>
         </div>
       `;
       return;
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="product-price">${formatPrice(product.price)}</div>
           <p class="product-desc">${product.description}</p>
           <button class="btn btn-primary" style="width: 100%; background-color: #25D366; box-shadow: 0 4px 14px 0 rgba(37, 211, 102, 0.39);" onclick="window.open('https://wa.me/+212648300759?text=' + encodeURIComponent('bch7al: ${product.name}'), '_blank')">
-            Order via WhatsApp
+            أطلب عبر الواتساب
           </button>
         </div>
       </article>
