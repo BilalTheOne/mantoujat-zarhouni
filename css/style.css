@@ -556,9 +556,56 @@ tr:hover td {
     height: 180px;
   }
   
-  /* Adjust modal spacing */
+  /* Responsive Tables into Cards */
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+  
+  table {
+    min-width: 100%;
+    margin-top: 0;
+  }
+
+  thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  tr {
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--surface-border);
+    border-radius: 12px;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: right;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 0.75rem 0;
+  }
+
+  td:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-top: 0.5rem;
+  }
+
+  td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #86efac;
+    margin-left: 1rem;
+  }
+  
+  /* Adjust modal spacing and padding override */
   .modal {
     margin: 1rem;
+    padding: 1.25rem !important;
   }
   
   .modal-header {

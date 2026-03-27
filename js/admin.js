@@ -92,12 +92,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     tableBody.innerHTML = products.map(p => `
       <tr>
-        <td class="product-thumbnail">
+        <td data-label="الصورة" class="product-thumbnail">
           <img src="${p.image}" alt="${p.name}">
         </td>
-        <td style="font-weight: 500;">${p.name}</td>
-        <td style="color: #a5b4fc; font-weight: 600;">${formatPrice(p.price)}</td>
-        <td>
+        <td data-label="الإسم" style="font-weight: 500;">${p.name}</td>
+        <td data-label="السعر" style="color: #a5b4fc; font-weight: 600;">${formatPrice(p.price)}</td>
+        <td data-label="إجراءات">
           <div class="table-actions">
             <button class="btn btn-ghost" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;" onclick="window.editProduct('${p.id}')">تعديل</button>
             <button class="btn btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;" onclick="window.deleteProduct('${p.id}')">حذف</button>
