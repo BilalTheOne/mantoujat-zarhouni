@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <h2 class="product-title">${product.name}</h2>
           <div class="product-price">${formatPrice(product.price)}</div>
           <p class="product-desc">${product.description}</p>
-          <button class="btn btn-primary" style="width: 100%; background-color: #25D366; box-shadow: 0 4px 14px 0 rgba(37, 211, 102, 0.39);" onclick="window.open('https://wa.me/+212648300759?text=' + encodeURIComponent('bch7al: ${product.name}'), '_blank')">
+          <button class="btn btn-primary" style="width: 100%; background-color: #25D366; box-shadow: 0 4px 14px 0 rgba(37, 211, 102, 0.39);" onclick="window.open('https://wa.me/+212648300759?text=' + encodeURIComponent('khasni: ${product.name}'), '_blank')">
             أطلب عبر الواتساب
           </button>
         </div>
